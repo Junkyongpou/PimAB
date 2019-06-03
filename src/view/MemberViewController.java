@@ -7,6 +7,7 @@ import java.util.ResourceBundle;
 import application.Main;
 import controller.MemberService;
 import controller.MemberServiceImpl;
+import controller.TestController;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -15,6 +16,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
@@ -25,7 +27,10 @@ public class MemberViewController implements Initializable {
 	@FXML	private Button btnUpdate;
 	@FXML	private Button btnDelete;
 	
-	@FXML	private TextField tfID;
+	@FXML	private Button btnExecute;
+	@FXML	private TextArea taExecute;
+	@FXML	private TextField tfExecute;
+	
 	@FXML	private PasswordField tfPW;
 	@FXML	private TextField tfName;
 	@FXML	private TextField tfMobilePhone;
@@ -41,12 +46,16 @@ public class MemberViewController implements Initializable {
 	ArrayList<Member> memberList;
 	MemberService memberService;
 	
+	TestController ts;
+	
 	public MemberViewController() {
 		
 	}
 	
 	@Override
-	public void initialize(URL arg0, ResourceBundle arg1) {
+	public void initialize(URL arg0, ResourceBu ndle arg1) {
+		ts = new TestControllerImpl();
+		/*
 		memberService = new MemberServiceImpl();
 		
 		columnName.setCellValueFactory(cvf -> cvf.getValue().unameProperty());
@@ -58,8 +67,22 @@ public class MemberViewController implements Initializable {
 		
 		btnRegister.setOnMouseClicked(event -> handleCreate());		
 		// btnDelete.setOnMouseClicked(e -> handleDelete());
-		loadMemberTableView();
+		*/
+		btnExecute.setOnMouseClicked(event -> handleCreate());		
+	//	loadMemberTableView();
 	}
+	String str = ""; //ì¸ìŠ¤í„´ìŠ¤ ë³€ìˆ˜ - ê°ì²´ ë³€ìˆ˜, ê°ì²´ê°€ ì¡´ìž¬í•˜ëŠ” ë™ì•ˆ
+	@FXML 
+	private void handleCreate() { // event source, listener, handler
+		str = ts.setTextArea(tfExecute.getText());
+		/*
+		str = taExecute.getText();
+		String name = tfExecute.getText();
+		str = ts.appendTextArea(str + "Hello JavaFx" + name  + "! \n!");
+		*/
+		taExecute.setText(str);
+	}
+
 	
 	private void showMemberInfo(Member member) {
 		if (member != null) {
@@ -84,17 +107,7 @@ public class MemberViewController implements Initializable {
 		tableViewMember.setItems(data);
 	}
 	
-	@FXML 
-	private void handleCreate() { // event source, listener, handler
-		if(tfID.getText().length() > 0) {
-			Member newMember = new Member(tfID.getText(), tfPW.getText(), tfName.getText(), tfMobilePhone.getText());
-			if(memberService.create(newMember) >= 0)	
-				data.add(newMember);
-			else
-				showAlert("ID Áßº¹À¸·Î µî·ÏÇÒ ¼ö ¾ø½À´Ï´Ù.");
-		} else
-			showAlert("ID´Â ÇÊ¼öÇ×¸ñ ÀÔ´Ï´Ù.");
-	}
+	
 	@FXML 
 	private void handleUpdate() {
 		Member newMember = new Member(tfID.getText(), tfPW.getText(), tfName.getText(), tfMobilePhone.getText());
@@ -104,7 +117,7 @@ public class MemberViewController implements Initializable {
 			tableViewMember.getItems().set(selectedIndex, newMember);
 			memberService.update(newMember);			
 		} else {
-			showAlert("¼öÁ¤À» ÇÒ ¼ö ¾ø½À´Ï´Ù.");          
+			showAlert("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï´ï¿½.");          
         }
 	}
 	
@@ -114,15 +127,15 @@ public class MemberViewController implements Initializable {
 		if (selectedIndex >= 0) {
 			memberService.delete(tableViewMember.getItems().remove(selectedIndex));			
 		} else {
-			showAlert("»èÁ¦¸¦ ÇÒ ¼ö ¾ø½À´Ï´Ù.");
+			showAlert("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½Ï´ï¿½.");
         }
 	}
 	
 	private void showAlert(String message) {
 		Alert alert = new Alert(AlertType.INFORMATION);
         alert.initOwner(mainApp.getRootStage());
-        alert.setTitle("È®ÀÎ");
-        alert.setContentText("È®ÀÎ : " + message);            
+        alert.setTitle("È®ï¿½ï¿½");
+        alert.setContentText("È®ï¿½ï¿½ : " + message);            
         alert.showAndWait();
 	}
 
